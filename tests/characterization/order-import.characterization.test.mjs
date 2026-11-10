@@ -29,7 +29,10 @@ test('CHAR-ORD-002 a group whose customer_code differs between its rows is rejec
   // The message wording is not pinned: only the code, the rows, the missing order and the exit code are.
 });
 
-// 2-1: 重複した商品のグループ（CSV-ORDER-DUPLICATE）の結果を固定するテストを、この下に足す。
-//      テスト名は 2-1 の指示どおりの ID で始める。上の例と同じく、メッセージの文言は固定しない。
-//      テストを足したら、次の todo の行は消してよい。
-test.todo('2-1: duplicate product group (CSV-ORDER-DUPLICATE) is not pinned yet');
+test('CHAR-ORD-001 a group containing the same product twice is rejected', () => {
+  const row = rowFor(result, 'CSV-ORDER-DUPLICATE');
+  assert.equal(row.result, 'REJECTED');
+  assert.equal(row.code, 'orderImport.duplicateProduct');
+  assert.equal(ordersCreatedFor(result, 'CSV-ORDER-DUPLICATE'), 0);
+  assert.equal(result.exitCode, 3);
+});
